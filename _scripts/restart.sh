@@ -128,6 +128,9 @@ do
   echo "${stamp}: ${cmd}"
   ${cmd}
 #  rm -f .env
+
+  `env`
+
   cd -
 
 done
