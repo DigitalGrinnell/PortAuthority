@@ -1,0 +1,26 @@
+version: '3.5'
+
+networks:
+  proxy:
+    external: true
+  internal:
+    external: false
+
+services:
+
+  portainer:
+    image: portainer/portainer
+    container_name: "portainer"
+    command: ${PORTAINER_AUTH} -H unix:///var/run/docker.sock
+    env_file:
+      - ../../.master.env
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - internal
+      - proxy
+    labels:
+      - traefik.backend=portainer
+      - traefik.port=9000
+      - traefik.frontend.rule=Host:${PORTAINER_PROJECT_FULL_URL}
+      - traefik.docker.network=proxy

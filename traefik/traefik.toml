@@ -1,0 +1,25 @@
+defaultEntryPoints = ["http", "https"]
+[web]
+address = ":8080"
+  [web.auth.basic]
+  users = ["admin:$apr1$LvBXFbG8$u8kbNVplrUY9qLQaQ9ZhA0"]
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+    [entryPoints.http.redirect]
+      entryPoint = "https"
+  [entryPoints.https]
+  address = ":443"
+    [entryPoints.https.tls]
+[acme]
+email = "digital@grinnell.edu"
+storage = "acme.json"
+entryPoint = "https"
+onHostRule = true
+onDemand = false
+[[acme.domains]]
+  main = "*.grinnell.edu"
+  sans = ["portainer.grinnell.edu", "traefik.grinnell.edu", "ohscript.grinnell.edu"]
+[acme.httpChallenge]
+entryPoint = "http"
+delayBeforeCheck = 0
