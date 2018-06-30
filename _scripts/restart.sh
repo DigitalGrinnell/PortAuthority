@@ -19,11 +19,12 @@ HELP
 exit 0
 }
 
-# # Each site 'stack' generally consists of 3 containers... mariadb, nginx and php.
-# dir="${HOME}/Projects/Docker/PortAuthority/_sites"
+# Each site 'stack' generally consists of the following containers...
+dir="${HOME}/Projects/Docker/PortAuthority/_sites"
 # declare -a containers=( "nginx" "php" "mariadb" )  # "adminer" )
 
 # Attempt to detect which host OS we are building on here.  This generally determines our target base domain.
+echo "OSTYPE is... '$OSTYPE'"
 if [[ $OSTYPE == darwin* ]]; then
   echo "On OSX";
   domain="docker.localhost"
