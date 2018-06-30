@@ -23,6 +23,9 @@ exit 0
 dir="${HOME}/Projects/Docker/PortAuthority/_sites"
 # declare -a containers=( "nginx" "php" "mariadb" )  # "adminer" )
 
+# Add in our .master.env environment variables
+source ${HOME}/Projects/Docker/PortAuthority/.master.env
+
 # Attempt to detect which host OS we are building on here.  This generally determines our target base domain.
 echo "OSTYPE is... '$OSTYPE'"
 if [[ $OSTYPE == darwin* ]]; then
