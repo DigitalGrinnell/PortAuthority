@@ -127,7 +127,7 @@ do
   cmd="docker-compose up -d"
   echo "${stamp}: ${cmd}"
   ${cmd}
-  rm -f .env
+#  rm -f .env
   cd -
 
 done
