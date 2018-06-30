@@ -20,7 +20,8 @@ exit 0
 }
 
 # Each site 'stack' generally consists of the following containers...
-dir="${HOME}/Projects/Docker/PortAuthority/_sites"
+proj="${HOME}/Projects/Docker/PortAuthority"
+dir="${proj}/_sites"
 # declare -a containers=( "nginx" "php" "mariadb" )  # "adminer" )
 
 # Add in our .master.env environment variables
@@ -119,12 +120,14 @@ do
     ${cmd}
   done
 
-  # Bring 'em back up using the site's docker-compose.yml
+  # Bring 'em back up using the site's docker-compose.yml and a copy of .master.env
   stamp=`date +%Y%m%d-%H%M`
   cd ${dir}/${site}
+  cp -f ${proj}/.master.env .env
   cmd="docker-compose up -d"
   echo "${stamp}: ${cmd}"
   ${cmd}
+  rm -f .env
   cd -
 
 done
