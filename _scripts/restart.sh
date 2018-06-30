@@ -31,6 +31,9 @@ if [[ $OSTYPE == darwin* ]]; then
 elif [[ $OSTYPE == Linux* ]]; then
   echo "On CentOS";
   domain="grinnell.edu"
+elif [[ $OSTYPE == linux* ]]; then
+  echo "On CentOS";
+  domain="grinnell.edu"
 else
   echo "OS type was not detected.  Assuming domain is docker.localhost"
   domain="docker.localhost"
