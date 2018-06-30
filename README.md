@@ -1,6 +1,6 @@
 # PortAuthority
 
-This project is a copy of my earlier SummittServices.com (SS) project work.  It's essentiall a stripped-down version of _SS_ with only _Traefik_ and _Portainer_ left in the original.  
+This project is a copy of my earlier SummittServices.com (SS) project work.  It's essentially a stripped-down version of _SS_ with only _Traefik_ and _Portainer_ left in the original.  
 
 ## Project Goal
 
