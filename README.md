@@ -60,13 +60,13 @@ My PROD instance of _Portainer_ can be found at https://portainer.grinnell.edu, 
 
 ## Scripts and Environment - Tieing It All Together
 
-Very early on I created the *_scripts* directory to hold some of the _bash_ that I'd use to keep things tidy.  I also started with the notion of keeping all my secrets (passwords mostly) in _.env_ files, but this became cumbersome so I have consolidated all secrets here into a single _.master.env_ file.
+Very early on I created the *_scripts* directory to hold some of the _bash_ that I'd use to keep things tidy.  I also started with the notion of keeping all my secrets (passwords mostly) in _.env_ files, but this became cumbersome so I have consolidated all secrets here into a single _.master.env_ file and _restart.sh_ takes care of distribution.
 
 ### .env File
 
 Clauses like `${PORTAINER_AUTH}` that you see in the code snippet above are references to these environment variables.  The `docker-compose` command automatically reads any `.env` file it finds in the same directory as the `docker-compose.yml` it is reading, so I followed suit by putting a `.env` file in every such directory.
 
-`.env` files are also environment-specific.  There's a set of them for DEV and a **different** set for PROD, with some different values in each environment.  For example, in DEV `${PORTAINER_AUTH}` has a value of '--no-auth' specifying that no login/authorization is required; but in PROD that variable is set to '--admin-password $2y$05$Fh2wW6kMJVo8tkirrRYYYOkwvPKMVdkRqmZOUi7bHerJTNVoQfyWC' which specifies that the _admin_ username requires a password for authentication.
+`.env` files are also environment-specific.  There's a .master.env for DEV and a **different** copy for PROD, with some different values in each environment.  For example, in DEV `${PORTAINER_AUTH}` has a value of '--no-auth' specifying that no login/authorization is required; but in PROD that variable is set to '--admin-password $2y$05$Fh2wW6kMJVo8tkirrRYYYOkwvPKMVdkRqmZOUi7bHerJTNVoQfyWC' which specifies that the _admin_ username requires a password for authentication.
 
 A technique documented in https://docs.docker.com/compose/environment-variables/ is employed here to manage environment variables.
 

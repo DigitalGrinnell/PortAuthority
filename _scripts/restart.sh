@@ -24,11 +24,10 @@ proj="${HOME}/Projects/Docker/PortAuthority"
 dir="${proj}/_sites"
 # declare -a containers=( "nginx" "php" "mariadb" )  # "adminer" )
 
-# Add in our .master.env environment variables
+# Export our .master.env environment variables
 set -a
 source ${HOME}/Projects/Docker/PortAuthority/.master.env
 set +a
-printenv
 
 # Attempt to detect which host OS we are building on here.  This generally determines our target base domain.
 echo "OSTYPE is... '$OSTYPE'"
@@ -130,8 +129,7 @@ do
   cmd="docker-compose up -d"
   echo "${stamp}: ${cmd}"
   ${cmd}
-#  rm -f .env
-  printenv
+  rm -f .env
   cd -
 
 done
