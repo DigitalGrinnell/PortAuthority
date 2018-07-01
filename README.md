@@ -76,10 +76,14 @@ I created the _restart.sh_ script in the *_scripts/* folder to assist with start
 
   - Ensures that the external _proxy_ network is up and running.
 
-  - Is home to the `docker run -d...` command from Step 2 above, and it ensures that Traefik is up and running.
+  - Is home to the `docker run -d...` command used to launch Traefik, and it ensures that the _traefik_ service is up and running.
 
-  - Stops, then removes, all containers and unused not-persistent volumes associated with the site(s) which are to be started or re-started.
+  - In a loop, working on each target site...
+  
+      - Stops, then removes, all containers and unused not-persistent volumes associated with the site.
+  
+      - Temporarily copies _.master.env_ into the target *_sites_ directory as _.env_ to provide environment settings to the container.
 
-  - Invokes a `docker-compose up -d` command for each targeted site to bring them back up one-at-a-time.
+      - Invokes a `docker-compose up -d` command to bring the site's continainers back up.
 
 See *_scripts/restart.sh* for complete details.
