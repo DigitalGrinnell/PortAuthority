@@ -1,6 +1,6 @@
 # PortAuthority
 
-This project is a copy of my earlier SummittServices.com (SS) project work.  It's essentially a stripped-down version of _SS_ with only _Traefik_ and _Portainer_ left in the original.  
+This project is a copy of my earlier SummittServices.com (SS) project work.  It's essentially a stripped-down version of _SS_ with only _Traefik_ and _Portainer_ left in the original.  Much of the _Traefix_ and cert handling here was informed by https://www.digitalocean.com/community/tutorials/how-to-use-traefik-as-a-reverse-proxy-for-docker-containers-on-ubuntu-16-04.  
 
 ## Project Goal
 
@@ -16,10 +16,9 @@ PortAuthority
    |--portainer
       |--docker-compose.yml  
 |--traefik  
-   |--acme.json
+   |--acme.json                    <-- do NOT share
    |--traefik.toml
-|--.master.env
-|--.remote-sync.json
+|--.master.env                     <-- do NOT share
 |--README.md
 ```
 
@@ -40,7 +39,7 @@ Some "as-built" resources and documents...
 
 - Lumogon (https://lumogon.com/) is used to inventory the environment as needed.  
 
-- Atom is used for much of the editing and its _remote-sync_ package (defined in _.remote-sync.json_) is employed to sync modifications between my MacBook Air (DEV) and PROD.
+- Atom is used for much of the editing and its _remote-sync_ package (defined in a _.remote-sync.json_ file) is employed to sync modifications between my DEV and PROD.
 
 
 ## Portainer
@@ -79,11 +78,18 @@ I created the _restart.sh_ script in the *_scripts/* folder to assist with start
   - Is home to the `docker run -d...` command used to launch Traefik, and it ensures that the _traefik_ service is up and running.
 
   - In a loop, working on each target site...
-  
-      - Stops, then removes, all containers and unused not-persistent volumes associated with the site.
-  
-      - Temporarily copies _.master.env_ into the target *_sites_ directory as _.env_ to provide environment settings to the container.
 
-      - Invokes a `docker-compose up -d` command to bring the site's continainers back up.
+      - Stops, then removes, all containers and unused not-persistent volumes associated with the site.
+
+      - Temporarily copies _.master.env_ into the target *_sites* directory as _.env_ to provide environment settings to the container.
+
+      - Invokes a `docker-compose up -d` command to bring the site's containers back up.
+
+Suggested use of _restart.sh_ is to create a symbolic link on your host to launch it.  Ensure that the script is executable (`chmod u+x restart.sh`) and try something like this...
+
+```
+sudo ln -s /path/to/PortAuthority/_scripts/restart.sh /usr/local/bin/port-authority-restart
+```
+Launch the script by typing something like `port-authority-restart --portainer` in a host terminal.
 
 See *_scripts/restart.sh* for complete details.
