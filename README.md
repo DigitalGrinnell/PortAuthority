@@ -66,7 +66,7 @@ Very early on I created the *_scripts* directory to hold some of the _bash_ that
 
 Clauses like `${PORTAINER_AUTH}` that you see in the code snippet above are references to these environment variables.  The `docker-compose` command automatically reads any `.env` file it finds in the same directory as the `docker-compose.yml` it is reading, so I followed suit by putting a `.env` file in every such directory.
 
-`.env` files are also environment-specific.  There's a .master.env for DEV and a **different** copy for PROD, with some different values in each environment.  For example, in DEV `${PORTAINER_AUTH}` has a value of '--no-auth' specifying that no login/authorization is required; but in PROD that variable is set to '--admin-password $2y$05$Fh2wW6kMJVo8tkirrRYYYOkwvPKMVdkRqmZOUi7bHerJTNVoQfyWC' which specifies that the _admin_ username requires a password for authentication.
+`.env` files are also environment-specific.  There's a .master.env for DEV and a **different** copy for PROD, with some different values in each environment.  For example, in DEV `${PORTAINER_AUTH}` has a value of '--no-auth' specifying that no login/authorization is required; but in PROD that variable is set to '--admin-password $2abcdefg2tt2kMJhijklmnopxxxOkwvPqrstuvqmZOUiwxyzrJjibberish' which specifies that the _admin_ username requires a password for authentication.
 
 A technique documented in https://docs.docker.com/compose/environment-variables/ is employed here to manage environment variables.
 
