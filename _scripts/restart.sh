@@ -52,10 +52,11 @@ case "$1" in
     declare -a containers=( "portainer" )   # Portainer has only one container
     ;;
   --ohscribe)
-    declare -a sites=( "admin" )
+    declare -a sites=( "OHScribe" )
+    declare -a containers=( "ohscribe" )   # OHScribe has only one container
     ;;
   --all)
-    declare -a sites=( "ohscribe" )
+    declare -a sites=( "OHScribe" )
     ;;
   --help)
     print_help
