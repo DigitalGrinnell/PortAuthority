@@ -1,6 +1,6 @@
 # PortAuthority
 
-This project is a copy of my earlier SummittServices.com (SS) project work.  It's essentially a stripped-down version of _SS_ with only _Traefik_ and _Portainer_ left in the original.  
+This project is a copy of my earlier SummittServices.com (SS) project work.  It's essentially a stripped-down version of _SS_ with only _Traefik_ and _Portainer_ left in the original.  Much of the _Traefix_ and cert handling here was informed by https://www.digitalocean.com/community/tutorials/how-to-use-traefik-as-a-reverse-proxy-for-docker-containers-on-ubuntu-16-04.  
 
 ## Project Goal
 
@@ -16,10 +16,9 @@ PortAuthority
    |--portainer
       |--docker-compose.yml  
 |--traefik  
-   |--acme.json
+   |--acme.json                    <-- do NOT share
    |--traefik.toml
-|--.master.env
-|--.remote-sync.json
+|--.master.env                     <-- do NOT share
 |--README.md
 ```
 
@@ -40,7 +39,7 @@ Some "as-built" resources and documents...
 
 - Lumogon (https://lumogon.com/) is used to inventory the environment as needed.  
 
-- Atom is used for much of the editing and its _remote-sync_ package (defined in _.remote-sync.json_) is employed to sync modifications between my MacBook Air (DEV) and PROD.
+- Atom is used for much of the editing and its _remote-sync_ package (defined in a _.remote-sync.json_ file) is employed to sync modifications between my DEV and PROD.
 
 
 ## Portainer
@@ -66,7 +65,7 @@ Very early on I created the *_scripts* directory to hold some of the _bash_ that
 
 Clauses like `${PORTAINER_AUTH}` that you see in the code snippet above are references to these environment variables.  The `docker-compose` command automatically reads any `.env` file it finds in the same directory as the `docker-compose.yml` it is reading, so I followed suit by putting a `.env` file in every such directory.
 
-`.env` files are also environment-specific.  There's a .master.env for DEV and a **different** copy for PROD, with some different values in each environment.  For example, in DEV `${PORTAINER_AUTH}` has a value of '--no-auth' specifying that no login/authorization is required; but in PROD that variable is set to '--admin-password $2y$05$Fh2wW6kMJVo8tkirrRYYYOkwvPKMVdkRqmZOUi7bHerJTNVoQfyWC' which specifies that the _admin_ username requires a password for authentication.
+`.env` files are also environment-specific.  There's a .master.env for DEV and a **different** copy for PROD, with some different values in each environment.  For example, in DEV `${PORTAINER_AUTH}` has a value of '--no-auth' specifying that no login/authorization is required; but in PROD that variable is set to '--admin-password $2abcdefg2tt2kMJhijklmnopxxxOkwvPqrstuvqmZOUiwxyzrJjibberish' which specifies that the _admin_ username requires a password for authentication.
 
 A technique documented in https://docs.docker.com/compose/environment-variables/ is employed here to manage environment variables.
 
@@ -76,10 +75,21 @@ I created the _restart.sh_ script in the *_scripts/* folder to assist with start
 
   - Ensures that the external _proxy_ network is up and running.
 
-  - Is home to the `docker run -d...` command from Step 2 above, and it ensures that Traefik is up and running.
+  - Is home to the `docker run -d...` command used to launch Traefik, and it ensures that the _traefik_ service is up and running.
 
-  - Stops, then removes, all containers and unused not-persistent volumes associated with the site(s) which are to be started or re-started.
+  - In a loop, working on each target site...
 
-  - Invokes a `docker-compose up -d` command for each targeted site to bring them back up one-at-a-time.
+      - Stops, then removes, all containers and unused not-persistent volumes associated with the site.
+
+      - Temporarily copies _.master.env_ into the target *_sites* directory as _.env_ to provide environment settings to the container.
+
+      - Invokes a `docker-compose up -d` command to bring the site's containers back up.
+
+Suggested use of _restart.sh_ is to create a symbolic link on your host to launch it.  Ensure that the script is executable (`chmod u+x restart.sh`) and try something like this...
+
+```
+sudo ln -s /path/to/PortAuthority/_scripts/restart.sh /usr/local/bin/port-authority-restart
+```
+Launch the script by typing something like `port-authority-restart --portainer` in a host terminal.
 
 See *_scripts/restart.sh* for complete details.
