@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Note that portions of this script tagged with '# change me!' may be specific to 
+# Digital Grinnell and should be changed if used elsewhere!
+
 echo
 echo "${0} called with parameters: ${@}"
 echo "--------------------------------------------------------------------"
@@ -7,11 +10,11 @@ echo "--------------------------------------------------------------------"
 # Help menu
 print_help() {
 cat <<-HELP
-This script can be used to RESTART one or more site stacks.
+This script can be used to RESTART one or more site stacks.  
 
   One or more parameters is required to specify the site(s) you wish to restart.
 
-       --ohscribe : The 'OHScribe!' Python3/Flask app site
+       --ohscribe : The 'OHScribe!' Python3/Flask app site        # change me!
             --all : All of the above
       --portainer : The Portainer Docker management site
 
@@ -30,19 +33,27 @@ source ${HOME}/Projects/Docker/PortAuthority/.master.env
 set +a
 
 # Attempt to detect which host OS we are building on here.  This generally determines our target base domain.
-echo "OSTYPE is... '$OSTYPE'"
-if [[ $OSTYPE == darwin* ]]; then
-  echo "On OSX";
+echo "OSTYPE is... '${OSTYPE}'"
+if [[ ${OSTYPE} == darwin* ]]; then
+  type="OSX"
   domain="docker.localhost"
-elif [[ $OSTYPE == Linux* ]]; then
-  echo "On CentOS";
-  domain="grinnell.edu"
-elif [[ $OSTYPE == linux* ]]; then
-  echo "On CentOS";
-  domain="grinnell.edu"
+elif [[ ${OSTYPE} == Linux* ]]; then
+  type="CentOS"
+  domain="grinnell.edu"                     # change me!
+elif [[ ${OSTYPE} == linux* ]]; then
+  type="CentOS"
+  domain="grinnell.edu"			    # change me!
 else
-  echo "OS type was not detected.  Assuming domain is docker.localhost"
+  type="NOT detected"
   domain="docker.localhost"
+fi
+
+host=`hostname`
+echo "${host}: OS type is '${type}' and domain is '${domain}'"
+if [[ ${host} == dgdockerx ]]; then                               # change me!
+  sub="traefikX"                                                  # change me!
+else
+  sub="traefik"
 fi
 
 # Parse Command Line Arguments
@@ -51,12 +62,12 @@ case "$1" in
     declare -a sites=( "portainer" )
     declare -a containers=( "portainer" )   # Portainer has only one container
     ;;
-  --ohscribe)
-    declare -a sites=( "OHScribe" )
-    declare -a containers=( "ohscribe" )   # OHScribe has only one container
+  --ohscribe)                                                                    # change me!
+    declare -a sites=( "OHScribe" )                                              # change me!
+    declare -a containers=( "ohscribe" )   # OHScribe has only one container     # change me!
     ;;
   --all)
-    declare -a sites=( "OHScribe" )
+    declare -a sites=( "OHScribe" )                                              # change me!
     ;;
   --help)
     print_help
@@ -88,7 +99,7 @@ if [[ ${RUNNING} != "true" ]]; then
     -v ${HOME}/Projects/Docker/PortAuthority/traefik/acme.json:/acme.json \
     -p 80:80 \
     -p 443:443 \
-    -l traefik.frontend.rule=Host:traefik.${domain} \
+    -l traefik.frontend.rule=Host:${sub}.${domain} \
     -l traefik.port=8080 \
     --network proxy \
     --name traefik \
