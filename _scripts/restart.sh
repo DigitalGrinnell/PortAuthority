@@ -30,19 +30,27 @@ source ${HOME}/Projects/Docker/PortAuthority/.master.env
 set +a
 
 # Attempt to detect which host OS we are building on here.  This generally determines our target base domain.
-echo "OSTYPE is... '$OSTYPE'"
-if [[ $OSTYPE == darwin* ]]; then
-  echo "On OSX";
+echo "OSTYPE is... '${OSTYPE}'"
+if [[ ${OSTYPE} == darwin* ]]; then
+  type="OSX"
   domain="docker.localhost"
-elif [[ $OSTYPE == Linux* ]]; then
-  echo "On CentOS";
+elif [[ ${OSTYPE} == Linux* ]]; then
+  type="CentOS"
   domain="grinnell.edu"
-elif [[ $OSTYPE == linux* ]]; then
-  echo "On CentOS";
+elif [[ ${OSTYPE} == linux* ]]; then
+  type="CentOS"
   domain="grinnell.edu"
 else
-  echo "OS type was not detected.  Assuming domain is docker.localhost"
+  type="NOT detected"
   domain="docker.localhost"
+fi
+
+host=`hostname`
+echo "${host}: OS type is '${type}' and domain is '${domain}'"
+if [[ ${host} == dgdockerx ]]; then
+  sub="traefikX"
+else
+  sub="traefik"
 fi
 
 # Parse Command Line Arguments
@@ -88,7 +96,7 @@ if [[ ${RUNNING} != "true" ]]; then
     -v ${HOME}/Projects/Docker/PortAuthority/traefik/acme.json:/acme.json \
     -p 80:80 \
     -p 443:443 \
-    -l traefik.frontend.rule=Host:traefik.${domain} \
+    -l traefik.frontend.rule=Host:${sub}.${domain} \
     -l traefik.port=8080 \
     --network proxy \
     --name traefik \

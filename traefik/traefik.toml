@@ -19,7 +19,7 @@ onHostRule = true
 onDemand = false
 [[acme.domains]]
   main = "*.grinnell.edu"
-  sans = ["portainer.grinnell.edu", "traefik.grinnell.edu", "ohscript.grinnell.edu"]
+  sans = ["traefikX.grinnell.edu", "portainerX.grinnell.edu", "ohscribeX.grinnell.edu"]
 [acme.httpChallenge]
 entryPoint = "http"
 delayBeforeCheck = 0
