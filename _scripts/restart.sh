@@ -90,7 +90,7 @@ else
 fi
 
 
-# Make sure Traefik is running!
+# Make sure Traefik is running!  
 RUNNING=$(docker inspect --format="{{.State.Running}}" traefik 2> /dev/null)
 if [[ ${RUNNING} != "true" ]]; then
   cmd="docker run -d \
