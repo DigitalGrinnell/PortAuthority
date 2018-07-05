@@ -1,8 +1,10 @@
 defaultEntryPoints = ["http", "https"]
+
 [web]
 address = ":8080"
   [web.auth.basic]
   users = ["admin:$apr1$PDg3oC4h$Vq1casoRrPy56APlBNEAT1"]
+
 [entryPoints]
   [entryPoints.http]
   address = ":80"
@@ -11,15 +13,23 @@ address = ":8080"
   [entryPoints.https]
   address = ":443"
     [entryPoints.https.tls]
+
 [acme]
 email = "digital@grinnell.edu"
 storage = "acme.json"
 entryPoint = "https"
 onHostRule = true
 onDemand = false
+# CA server to use.
+# Uncomment the line to use Let's Encrypt's staging server,
+# leave commented to go to prod.
+# Default: "https://acme-v02.api.letsencrypt.org/directory"
+caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+
 [[acme.domains]]
   main = "*.grinnell.edu"
   sans = ["traefikX.grinnell.edu", "portainerX.grinnell.edu", "ohscribeX.grinnell.edu"]
+
 [acme.httpChallenge]
 entryPoint = "http"
 delayBeforeCheck = 0
