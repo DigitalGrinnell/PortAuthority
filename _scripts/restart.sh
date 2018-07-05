@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Note that portions of this script tagged with '# change me!' may be specific to 
+# Digital Grinnell and should be changed if used elsewhere!
+
 echo
 echo "${0} called with parameters: ${@}"
 echo "--------------------------------------------------------------------"
@@ -7,11 +10,11 @@ echo "--------------------------------------------------------------------"
 # Help menu
 print_help() {
 cat <<-HELP
-This script can be used to RESTART one or more site stacks.
+This script can be used to RESTART one or more site stacks.  
 
   One or more parameters is required to specify the site(s) you wish to restart.
 
-       --ohscribe : The 'OHScribe!' Python3/Flask app site
+       --ohscribe : The 'OHScribe!' Python3/Flask app site        # change me!
             --all : All of the above
       --portainer : The Portainer Docker management site
 
@@ -36,10 +39,10 @@ if [[ ${OSTYPE} == darwin* ]]; then
   domain="docker.localhost"
 elif [[ ${OSTYPE} == Linux* ]]; then
   type="CentOS"
-  domain="grinnell.edu"
+  domain="grinnell.edu"                     # change me!
 elif [[ ${OSTYPE} == linux* ]]; then
   type="CentOS"
-  domain="grinnell.edu"
+  domain="grinnell.edu"			    # change me!
 else
   type="NOT detected"
   domain="docker.localhost"
@@ -47,8 +50,8 @@ fi
 
 host=`hostname`
 echo "${host}: OS type is '${type}' and domain is '${domain}'"
-if [[ ${host} == dgdockerx ]]; then
-  sub="traefikX"
+if [[ ${host} == dgdockerx ]]; then                               # change me!
+  sub="traefikX"                                                  # change me!
 else
   sub="traefik"
 fi
@@ -59,12 +62,12 @@ case "$1" in
     declare -a sites=( "portainer" )
     declare -a containers=( "portainer" )   # Portainer has only one container
     ;;
-  --ohscribe)
-    declare -a sites=( "OHScribe" )
-    declare -a containers=( "ohscribe" )   # OHScribe has only one container
+  --ohscribe)                                                                    # change me!
+    declare -a sites=( "OHScribe" )                                              # change me!
+    declare -a containers=( "ohscribe" )   # OHScribe has only one container     # change me!
     ;;
   --all)
-    declare -a sites=( "OHScribe" )
+    declare -a sites=( "OHScribe" )                                              # change me!
     ;;
   --help)
     print_help
